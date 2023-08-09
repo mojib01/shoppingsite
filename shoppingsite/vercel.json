@@ -2,14 +2,14 @@
 
 {
     "builds": [{
-        "src": "shoppingsite/wsgi.py",
+        "src": "shoppingsite/shoppingsite/wsgi.py",
         "use": "@vercel/python",
         "config": { "maxLambdaSize": "15mb", "runtime": "python3.9" }
     }],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "shoppingsite/wsgi.py"
+            "dest": "shoppingsite/shoppingsite/wsgi.py"
         }
     ]
 }
