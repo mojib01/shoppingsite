@@ -25,9 +25,7 @@ SECRET_KEY = 'django-insecure-cmq8hk^g6ud8l06@j)pkbmy*1xzo&w+a+t+$+)rw$m8!3*&3_=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
-
-ALLOWED_HOSTS = ['.vercel.app', 'now.sh', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['.vercel.app','now.sh','127.0.0.1','localhost']
 
 
 # Application definition
@@ -78,8 +76,12 @@ WSGI_APPLICATION = 'shoppingsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'c3f1b1adA3gbEg4Ga61c4eDe-4dC1BDE',
+        'HOST': 'monorail.proxy.rlwy.net',
+        'PORT': '33949',
     }
 }
 
@@ -124,8 +126,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = '/profile/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATICFILES_DIRS = os.path.join(BASE_DIR, 'shop/static'),
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'shop/static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
