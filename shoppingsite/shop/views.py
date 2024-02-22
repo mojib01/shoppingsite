@@ -9,21 +9,13 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-
-# def home(request):
-#  return render(request, 'shop/home.html')
-
 class ProductView(View):
     def get(self, request):
         topwears = Product.objects.filter(category='TW')
         bottomwears = Product.objects.filter(category='BW')
         mobiles = Product.objects.filter(category='M')
-        return render(request, 'shop/home.html',
+        return render(request, 'home.html',
         {'topwears':topwears, 'bottomwears':bottomwears, 'mobiles':mobiles})
-
-
-# def product_detail(request):
-#  return render(request, 'shop/productdetail.html')
 
 class ProductDetailView(View):
     def get(self, request, pk):
@@ -32,10 +24,7 @@ class ProductDetailView(View):
         if request.user.is_authenticated:
             item_already_in_cart = Cart.objects.filter(Q(product=product.id) & Q(user=request.user)).exists()
             
-        return render(request, 'shop/productdetail.html', {'product':product, 'item_already_in_cart':item_already_in_cart})
-
-# def add_to_cart(request):
-#  return render(request, 'shop/addtocart.html')
+        return render(request, 'productdetail.html', {'product':product, 'item_already_in_cart':item_already_in_cart})
 
 
 @login_required
@@ -65,9 +54,9 @@ def show_cart(request):
                 tempamount = (p.quantity * p.product.discounted_price)
                 amount += tempamount
                 totalamount = amount + shipping_amount
-            return render(request, 'shop/addtocart.html', {'carts':cart, 'totalamount':totalamount, 'amount':amount})  
+            return render(request, 'addtocart.html', {'carts':cart, 'totalamount':totalamount, 'amount':amount})  
         else:
-            return render(request, 'shop/emptycart.html')
+            return render(request, 'emptycart.html')
     
 def plus_cart(request):
     if request.method == 'GET':
@@ -93,8 +82,6 @@ def minus_cart(request):
     if request.method == 'GET':
         prod_id = request.GET['prod_id']
         c = Cart.objects.get(Q(product=prod_id) & Q(user=request.user))
-        # c.quantity-=1
-        # c.save()
         if c.quantity > 1:
             c.quantity-=1
             c.save()
@@ -136,21 +123,6 @@ def remove_cart(request):
 def buy_now(request):
  return render(request, 'shop/buynow.html')
 
-# def profile(request):
-#  return render(request, 'shop/profile.html')
-
-# def address(request):
-#  return render(request, 'shop/address.html')
-
-# def orders(request):
-#  return render(request, 'shop/orders.html')
-
-# def change_password(request):
-#  return render(request, 'shop/changepassword.html')
-
-# def mobile(request):
-#  return render(request, 'shop/mobile.html')
-
 def mobile(request, data=None):
     if data == None:
         mobiles = Product.objects.filter(category='M')
@@ -161,30 +133,24 @@ def mobile(request, data=None):
     elif data == 'above':
         mobiles = Product.objects.filter(category='M').filter(discounted_price__gt=10000)
 
-    return render(request, 'shop/mobile.html', {'mobiles':mobiles})
-
-# def login(request):
-#  return render(request, 'shop/login.html')
-
-# def customerregistration(request):
-#  return render(request, 'shop/customerregistration.html')
+    return render(request, 'mobile.html', {'mobiles':mobiles})
 
 class CustomerRegistrationView(View):
     def get(self, request):
         form = CustomerRegistrationForm()
-        return render(request, 'shop/customerregistration.html', {'form':form})
+        return render(request, 'customerregistration.html', {'form':form})
     def post(self, request):
         form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
             messages.success(request, 'Conguratulations!! Registered Successfully')
             form.save()
-        return render(request, 'shop/customerregistration.html', {'form':form})
+        return render(request, 'customerregistration.html', {'form':form})
 
 @method_decorator(login_required, name='dispatch')
 class ProfileView(View):
     def get(self, request):
         form = CustomerProfileForm()
-        return render(request, 'shop/profile.html', {'form':form, 'active':'btn-primary'})
+        return render(request, 'profile.html', {'form':form, 'active':'btn-primary'})
 
     def post(self, request):
         form = CustomerProfileForm(request.POST)
@@ -198,15 +164,13 @@ class ProfileView(View):
             reg = Customer(user=usr, name=name, locality=locality, city=city, state=state, zipcode=zipcode)
             reg.save()
             messages.success(request, 'Conguratulations!! Profile Updated Successfully')
-        return render(request, 'shop/profile.html', {'form':form, 'active':'btn-primary'})
+        return render(request, 'profile.html', {'form':form, 'active':'btn-primary'})
 
 @login_required
 def address(request):
     add = Customer.objects.filter(user=request.user)
-    return render(request, 'shop/address.html', {'add':add, 'active':'btn-primary' })
+    return render(request, 'address.html', {'add':add, 'active':'btn-primary' })
 
-# def checkout(request):
-#  return render(request, 'shop/checkout.html')
 
 @login_required
 def checkout(request):
@@ -222,12 +186,12 @@ def checkout(request):
             tempamount = (p.quantity * p.product.discounted_price)
             amount += tempamount
         totalamount = amount + shipping_amount
-    return render(request, 'shop/checkout.html', {'add':add, 'totalamount':totalamount, 'cart_items':cart_items})
+    return render(request, 'checkout.html', {'add':add, 'totalamount':totalamount, 'cart_items':cart_items})
 
 @login_required
 def orders(request):
     op =OrderPlaced.objects.filter(user=request.user)
-    return render(request, 'shop/orders.html', {'order_placed':op})
+    return render(request, 'orders.html', {'order_placed':op})
     
 @login_required
 def payment_done(request):
