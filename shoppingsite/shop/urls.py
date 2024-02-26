@@ -5,7 +5,9 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from .forms import LoginForm, MyPasswordChangeForm, MyPasswordResetForm, MySetPasswordForm
 urlpatterns = [
-    path('', views.ProductView.as_view(), name="home"),
+    path('', views.ProductView.as_view(), name='index'),
+
+    path('home/', views.ProductView.as_view(), name="home"),
 
     path('product-detail/<int:pk>', views.ProductDetailView.as_view(), name='product-detail'),
 
