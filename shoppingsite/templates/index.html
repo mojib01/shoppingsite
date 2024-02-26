@@ -1,103 +1,111 @@
-{% extends 'base.html' %}
+<!doctype html>
 {% load static %}
-{% block title %}Home{% endblock title %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block banner_slider %}
-<!--Banner Slider-->
- <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner mb-3">
-    <div class="carousel-item active">
-      <img src="{% static 'images/banner/b1.jpg' %}" class="d-block w-100" alt="..."> 
-    </div>
-    <div class="carousel-i
-      <img src="{% static 'images/banner/b2.jpg' %}" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="{% static 'images/banner/b3.jpg' %}" class="d-block w-100" alt="...">
-    </div>
-    <div class="carousel-item">
-      <img src="{% static 'images/banner/b4.jpg' %}" class="d-block w-100" alt="...">
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-bs-slide="prev">
-    <span class="carousel-control-prev-icon bg-danger rounded" aria-hidden="true"></span>
-    <span class="visually-hidden">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-bs-slide="next">
-    <span class="carousel-control-next-icon bg-danger rounded" aria-hidden="true"></span>
-    <span class="visually-hidden">Next</span>
-  </a>
-</div>
-<!-- End Banner Slider -->
-{% endblock banner_slider %}
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 
-{% block livesale %}
-<!-- Live Sale Section -->
-<div class="container">
-  <div class="row bg-secondary text-center p-3 text-white border-bottom shadow rounded">
-    <h1 class="text-black-50">SALE IS LIVE NOW</h1>
-    <img src="{% static 'shop/images/banner/b6.jpg' %}" class="d-block w-100 img-fluid" alt="...">
-  </div>
-</div> 
-<!-- End Live Sale Section -->
-{% endblock livesale %}
+    <!--Owl Carousel CSS-->
+    <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
 
-{% block main-content %}
-<!-- 1st Product Slider -->
-<div class="m-3 text-center">
-  <h2>Bottom Wears</h2>
-  <!-- Slider 1 -->
-  <div class="owl-carousel" id="slider1">
-    {% for b in bottomwears %}
-      <a href="{% url 'product-detail' b.id %}" class="btn">
-        <div class="item">
-          <img src="{{b.product_image.url}}"alt="" height="200px">
-          <span class="fw-bold">{{b.title}}</span><br/>
-          <span class="fs-5">Rs. {{b.discounted_price}}</span>
+    <!--FontAwesome CSS-->
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+
+    <!--Custom CSS-->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+    <title>Shoppingsite | {% block title %} {% endblock title %} </title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top" style="font-weight:600">
+      <div class="container">
+        <img src="{% static 'images/banner/logo.png' %}" class="d-block rounded-2" alt="..."> </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="/">Home</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" id="electronicsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+               Electronics
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="electronicsDropdown">
+                <li><a class="dropdown-item" href="{% url 'mobile' %}">Mobile</a></li>
+                <li><a class="dropdown-item" href="#">Laptop</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" id="fashionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Fashion
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="fashionDropdown">
+                <li><a class="dropdown-item" href="#">Top Wear</a></li>
+                <li><a class="dropdown-item" href="#">Bottom Wear</a></li>
+              </ul>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-warning" type="submit"><i class="fas fa-search"></i></button>
+          </form>
+          <div>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            {% if request.user.is_authenticated %}
+              <li class="nav-item dropdown mx-2">
+                <a class="nav-link dropdown-toggle text-white" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{request.user.username|capfirst}}
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+                  <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                  <li><a class="dropdown-item" href="{% url 'orders' %}">Orders</a></li>
+                  <li><a class="dropdown-item" href="{% url 'passwordchanged' %}">Change Password</a></li>
+                  <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+              </li>
+              <li class="nav-item mx-2">
+                <a href="{% url 'showcart' %}" class="nav-link text-white"><span class="badge bg-danger">{{item_count}}</span> Cart </a>
+              </li>
+            {% else %}
+              <li class="nav-item mx-2">
+                <a href="{% url 'login' %}" class="nav-link text-white">Login</a>
+                </li>
+              <li class="nav-item mx-2">
+                <a href="{% url 'customerregistration' %}" class="nav-link text-white">Registration</a>
+              </li>
+            {% endif %}
+            </ul>
+          </div>
         </div>
-      </a>
-    {% endfor %}
-  </div>
- </div>
-</div>
-<hr>
-<!-- End 1st Product Slider -->
+      </div>
+    </nav>
+    {% block banner_slider %} {% endblock banner_slider %}
+    {% block livesale %} {% endblock livesale %}
+    {% block main-content %} {% endblock main-content %}
 
-<!-- 2st Product Slider -->
-<div class="m-3 text-center">
-  <h2>Top Wears</h2>
-  <!-- Slider 2 -->
-  <div class="owl-carousel" id="slider2">
-    {% for tp in topwears %}
-      <a href="{% url 'product-detail' tp.id %}" class="btn">
-        <div class="item">
-          <img src="{{tp.product_image.url}}"alt="" height="200px">
-          <span class="fw-bold">{{tp.title}}</span><br/>
-          <span class="fs-5">Rs. {{tp.discounted_price}}</span>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
-</div>
-<hr>
-<!-- End 2st Product Slider -->
+    <!-- Start Footer -->
+    <footer class="container-fluid bg-dark text-center p-2 mt-5">
+      <small class="text-white">Copyright &copy; 2023 || Designed By Mojib || </small>
+      <img src="{% static 'images/payment.png' %}" alt="" srcset="" class="img-fluid" height="2px">
+    </footer> 
+    <!-- End Footer -->
 
-<!-- 3st Product Slider -->
-<div class="m-3 text-center">
-  <h2>Mobiles</h2>
-  <!-- Slider 3 -->
-  <div class="owl-carousel" id="slider3">
-    {% for m in mobiles %}
-      <a href="{% url 'product-detail' m.id %}" class="btn">
-        <div class="item">
-          <img src="{{m.product_image.url}}"alt="" height="200px">
-          <span class="fw-bold">{{m.title}}</span><br/>
-          <span class="fs-5">Rs. {{m.discounted_price}}</span>
-        </div>
-      </a>
-    {% endfor %}
-  </div>
-</div>
-<!-- End 3st Product Slider -->
-{% endblock main-content %}
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 
+    <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'js/all.min.js' %}"></script>
+    <script src="{% static 'js/myscript.js' %}"></script>
+  </body>
+</html>
