@@ -9,9 +9,6 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 
-def index(request):
-    return render( request, 'index.html')
-
 class ProductView(View):
     def get(self, request):
         topwears = Product.objects.filter(category='TW')
